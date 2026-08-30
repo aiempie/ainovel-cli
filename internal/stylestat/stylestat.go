@@ -90,7 +90,7 @@ var patternDefs = []struct {
 var (
 	sentenceSplit = regexp.MustCompile(`[。！？\n]+`)
 	openingTimeRe = regexp.MustCompile(`夜|清晨|黎明|天亮|醒来|晨光|一整夜`)
-	titlePrefixRe = regexp.MustCompile(`^#{0,2}\s*第[零〇一二三四五六七八九十百千万\d]+章`)
+	titlePrefixRe = regexp.MustCompile(`^#{0,2}\s*(?:第[零〇一二三四五六七八九十百千万\d]+章|Chương\s+\d+)`)
 )
 
 // shortEndingRunes — dòng cuối không vượt quá số ký tự này thì tính là "kết thúc ngắn".

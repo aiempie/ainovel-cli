@@ -34,11 +34,17 @@ const sub = `[^】〗\n]*`
 
 var defaultChapterRegex = regexp.MustCompile(
 	`(?im)^#{0,2}[` + ws + `]*(?:正文[` + ws + `]*)?[【〖]?[` + ws + `]*(?:` +
+		`(?:Chương|Hồi|Tập|Tiết)\s*(?:[` + cnNum + `]+)` +
+		`(?:[:：．\.` + ws + `]+(?P<vi>` + sub + `))?` +
+		`|` +
 		`第\s*(?:[` + cnNum + `]+)\s*(?:章|回|话|卷|节|幕)` +
 		`(?:[:：．\.` + ws + `]+(?P<cn>` + sub + `))?` +
 		`|` +
 		`卷\s*(?:[` + cnNum + `]+)` +
 		`(?:[:：．\.` + ws + `]+(?P<vol>` + sub + `))?` +
+		`|` +
+		`(?P<vikw>Mở\s*đầu|Lời\s*mở\s*đầu|Lời\s*kết|Vĩ\s*thanh|Ngoại\s*truyện|Phiên\s*ngoại)` +
+		`(?:[:：．\.` + ws + `]+(?P<visp>` + sub + `))?` +
 		`|` +
 		`(?P<spkw>序章|序幕|楔子|引子|前言|序言|尾声|终章|后记|番外|外传)` +
 		`(?:[:：．\.` + ws + `]+(?P<sp>` + sub + `))?` +
@@ -98,7 +104,7 @@ func splitText(text string, pattern *regexp.Regexp) []Chapter {
 // extractTitle trích xuất tiêu đề chương từ dòng khớp; ưu tiên lấy nhóm đặt tên, nếu không có thì fallback về số thứ tự chương.
 func extractTitle(line string, pattern *regexp.Regexp, loc []int, fallbackNum int) string {
 	subnames := pattern.SubexpNames()
-	priority := []string{"cn", "vol", "sp", "en", "spkw", "enkw"}
+	priority := []string{"vi", "visp", "cn", "vol", "sp", "en", "vikw", "spkw", "enkw"}
 	for _, name := range priority {
 		idx := pattern.SubexpIndex(name)
 		if idx <= 0 {
@@ -120,7 +126,7 @@ func extractTitle(line string, pattern *regexp.Regexp, loc []int, fallbackNum in
 			return t
 		}
 	}
-	return fmt.Sprintf("第%d章", fallbackNum)
+	return fmt.Sprintf("Chương %d", fallbackNum)
 }
 
 // stripTrailingNoise loại bỏ nhiễu đuôi phổ biến (ví dụ: đoạn license của Project Gutenberg, v.v.).

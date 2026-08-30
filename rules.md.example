@@ -25,15 +25,15 @@ forbidden_chars:
 # chỉ điền "chuỗi cố định có độ dài xác định"; các mẫu có biến (ví dụ "không phải X mà là Y") không thể bắt bằng khớp chuỗi đen,
 # nên viết vào phần markdown bên dưới để biên tập viên phán đoán theo ngữ nghĩa.
 forbidden_phrases:
-  - "某种程度上"
-  - "值得注意的是"
+  - "ở một mức độ nào đó"
+  - "đáng chú ý là"
 
 # Ngưỡng từ sáo rỗng: chỉ báo warning khi vượt quá N lần trong chương (không cộng dồn qua các chương).
-# Cũng hỗ trợ dạng danh sách: - 不禁  - 竟然  ← ngưỡng mặc định là 1
+# Cũng hỗ trợ dạng danh sách: - không khỏi  - lại có thể  ← ngưỡng mặc định là 1
 fatigue_words:
-  不禁: 1
-  竟然: 1
-  仿佛: 2
+  không khỏi: 1
+  lại có thể: 1
+  dường như: 2
 ---
 
 # Phong cách

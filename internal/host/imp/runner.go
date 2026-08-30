@@ -62,8 +62,8 @@ func Run(ctx context.Context, deps Deps, opts Options) (<-chan Event, error) {
 		total := len(chapters)
 		if total == 0 {
 			emit(StageError, 0, 0,
-				"Không nhận diện được chương nào: hỗ trợ tiêu đề dạng「第N章/回/话/卷/节/幕」「卷N」「序章/楔子/尾声/番外/外传」"+
-					"「Chapter N / Prologue」, tương thích Markdown #, khoảng trắng toàn bộ, bao bởi【】và mã hóa GBK."+
+				"Không nhận diện được chương nào: hỗ trợ tiêu đề dạng「Chương N / Hồi N / Tập N」「Mở đầu / Lời kết / Ngoại truyện」"+
+					"「Chapter N / Prologue」, tương thích Markdown #, khoảng trắng, bao bởi【】và nhiều bảng mã."+
 					"Vui lòng xác nhận tệp là văn bản tiểu thuyết có chia chương.",
 				fmt.Errorf("no chapters matched"))
 			return
