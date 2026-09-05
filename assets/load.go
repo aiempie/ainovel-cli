@@ -44,8 +44,20 @@ type Bundle struct {
 	RulesFS fs.FS
 }
 
+// NormalizeStyle chuẩn hóa tên phong cách viết (ví dụ: sangvan, sảng văn, shuangwen -> sangvan).
+func NormalizeStyle(style string) string {
+	s := strings.ToLower(strings.TrimSpace(style))
+	switch s {
+	case "sangvan", "sang_van", "sang-van", "sảng văn", "sảng-văn", "shuangwen":
+		return "sangvan"
+	default:
+		return s
+	}
+}
+
 // Load trả về tập hợp tài nguyên tương ứng với phong cách được chỉ định.
 func Load(style string) Bundle {
+	style = NormalizeStyle(style)
 	return Bundle{
 		References: loadReferences(style),
 		Prompts:    loadPrompts(),
@@ -65,6 +77,7 @@ func loadRulesFS() fs.FS {
 }
 
 func loadReferences(style string) tools.References {
+	style = NormalizeStyle(style)
 	if style == "" {
 		style = "default"
 	}
@@ -133,7 +146,18 @@ func loadStyles() map[string]string {
 		if err != nil {
 			continue
 		}
-		styles[name] = string(data)
+		content := string(data)
+		styles[name] = content
+		if norm := NormalizeStyle(name); norm != name {
+			styles[norm] = content
+		}
+	}
+	if sv, ok := styles["sangvan"]; ok {
+		styles["sang_van"] = sv
+		styles["sang-van"] = sv
+		styles["shuangwen"] = sv
+		styles["sảng văn"] = sv
+		styles["sảng-văn"] = sv
 	}
 	return styles
 }

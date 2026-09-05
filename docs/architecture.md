@@ -83,14 +83,14 @@ Không đưa vào các abstraction như WorkflowInstance / TaskInstance / Comman
    Progress · Checkpoints · Outline · Drafts · Summaries · Characters · World · Signals
 ```
 
-| Tầng | Làm gì | Không làm gì |
-|---|---|---|
-| Entry | Hiển thị, nhận đầu vào | Quyết định nghiệp vụ |
-| Host | Khởi động/khôi phục/can thiệp/chiếu sự kiện/định tuyến Flow | Bỏ qua Điều phối viên gọi trực tiếp SubAgent; ghi trạng thái |
-| Điều phối viên | Thực thi chỉ thị Host, phán quyết Steer người dùng, khởi động chọn người lập kế hoạch | Tự quyết định bước tiếp theo của mỗi chương; ghi file |
-| Agents | Suy nghĩ, viết lách, đánh giá | Đọc ghi Store trực tiếp |
-| Tools | IO nguyên tử + checkpoint + idempotent | Chỉ thị định tuyến liên agent |
-| Store | Ghi xuống đĩa hệ thống file | Logic nghiệp vụ |
+| Tầng           | Làm gì                                                                                | Không làm gì                                                 |
+| -------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Entry          | Hiển thị, nhận đầu vào                                                                | Quyết định nghiệp vụ                                         |
+| Host           | Khởi động/khôi phục/can thiệp/chiếu sự kiện/định tuyến Flow                           | Bỏ qua Điều phối viên gọi trực tiếp SubAgent; ghi trạng thái |
+| Điều phối viên | Thực thi chỉ thị Host, phán quyết Steer người dùng, khởi động chọn người lập kế hoạch | Tự quyết định bước tiếp theo của mỗi chương; ghi file        |
+| Agents         | Suy nghĩ, viết lách, đánh giá                                                         | Đọc ghi Store trực tiếp                                      |
+| Tools          | IO nguyên tử + checkpoint + idempotent                                                | Chỉ thị định tuyến liên agent                                |
+| Store          | Ghi xuống đĩa hệ thống file                                                           | Logic nghiệp vụ                                              |
 
 Phụ thuộc một chiều: `entry → host → agents → tools → store → domain`. `tools/` không tham chiếu `agents/host/`, `host/` không tham chiếu trực tiếp `tools/store/`. Module độc lập ngang: `errs/` có thể được bất kỳ tầng nào tham chiếu, `diag/` đăng ký luồng sự kiện host + chỉ đọc `store/`.
 
@@ -157,17 +157,17 @@ Công cụ là điểm tương tác duy nhất giữa tầng dữ liệu thực 
 
 Mỗi lần gọi thành công phải: artifact ghi xuống đĩa → Progress cập nhật → checkpoint thêm vào. Ba bước hoàn thành trong khóa loại trừ.
 
-| Công cụ | Artifact | Step |
-|---|---|---|
-| `plan_chapter` | drafts/chXX.plan.json | plan |
-| `draft_chapter` | drafts/chXX.draft.md | draft |
-| `edit_chapter` | drafts/chXX.draft.md | edit |
-| `check_consistency` | Không có (chỉ đọc, trả về inline) | consistency_check |
-| `commit_chapter` | chapters/chXX.md + Progress | commit |
-| `save_review` | reviews/chXX.json (global là chXX-global.json) | review |
-| `save_arc_summary` | summaries/arc-vNNaNN.json | arc_summary |
-| `save_volume_summary` | summaries/vol-vNN.json | volume_summary |
-| `save_foundation` | foundation/*.json | premise / outline / layered_outline / characters / world_rules / expand_arc / append_volume / update_compass / complete_book |
+| Công cụ               | Artifact                                       | Step                                                                                                                         |
+| --------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `plan_chapter`        | drafts/chXX.plan.json                          | plan                                                                                                                         |
+| `draft_chapter`       | drafts/chXX.draft.md                           | draft                                                                                                                        |
+| `edit_chapter`        | drafts/chXX.draft.md                           | edit                                                                                                                         |
+| `check_consistency`   | Không có (chỉ đọc, trả về inline)              | consistency_check                                                                                                            |
+| `commit_chapter`      | chapters/chXX.md + Progress                    | commit                                                                                                                       |
+| `save_review`         | reviews/chXX.json (global là chXX-global.json) | review                                                                                                                       |
+| `save_arc_summary`    | summaries/arc-vNNaNN.json                      | arc_summary                                                                                                                  |
+| `save_volume_summary` | summaries/vol-vNN.json                         | volume_summary                                                                                                               |
+| `save_foundation`     | foundation/\*.json                             | premise / outline / layered_outline / characters / world_rules / expand_arc / append_volume / update_compass / complete_book |
 
 `commit_chapter` đảm nhận phát hiện kết thúc cung/tập/toàn sách, trả về 19 field dữ liệu thực tế (`arc_end` / `needs_expansion` / `book_complete` v.v.; khi bật kiểm tra quy tắc cơ học thì thêm `rule_violations`). `save_review` đảm nhận nâng cấp verdict (cổng chấm điểm, hợp đồng missed → rewrite). Những logic trước đây rải rác ở tầng policy nay được cố định trong nội bộ công cụ.
 
@@ -175,16 +175,16 @@ Mỗi lần gọi thành công phải: artifact ghi xuống đĩa → Progress c
 
 ### 5.3 Phân tầng lỗi
 
-| Loại lỗi | Tầng xử lý | Hành động |
-|---|---|---|
-| Network timeout / streaming EOF | Tools | Thử lại 3 lần |
-| provider 429/503 | litellm | failover sang nhà cung cấp dự phòng |
-| Xác thực / mô hình không tồn tại | Tools | Ném lên terminal |
-| Thiếu artifact tiền đề | Tools | Ném lên conflict, LLM gọi `novel_context` rồi thử lại |
-| Tham số công cụ không hợp lệ | Tools | Ném lên validation, LLM sửa tham số |
-| MaxTurns cạn | agentcore | run kết thúc, Host phát done |
+| Loại lỗi                                                | Tầng xử lý                                     | Hành động                                                  |
+| ------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+| Network timeout / streaming EOF                         | Tools                                          | Thử lại 3 lần                                              |
+| provider 429/503                                        | litellm                                        | failover sang nhà cung cấp dự phòng                        |
+| Xác thực / mô hình không tồn tại                        | Tools                                          | Ném lên terminal                                           |
+| Thiếu artifact tiền đề                                  | Tools                                          | Ném lên conflict, LLM gọi `novel_context` rồi thử lại      |
+| Tham số công cụ không hợp lệ                            | Tools                                          | Ném lên validation, LLM sửa tham số                        |
+| MaxTurns cạn                                            | agentcore                                      | run kết thúc, Host phát done                               |
 | Tin nhắn không hợp lệ từ LLM (thinking-only stop, v.v.) | agentcore (`llm/litellm.go` `convertMessages`) | Đẩy vào stack dự phòng + lọc khi pop; Host không nhận biết |
-| Phản hồi streaming rỗng / suy nghĩ dài | litellm (`StreamIdleTimeout=5min`) | watchdog kích hoạt thử lại |
+| Phản hồi streaming rỗng / suy nghĩ dài                  | litellm (`StreamIdleTimeout=5min`)             | watchdog kích hoạt thử lại                                 |
 
 ### 5.4 Idempotent
 
@@ -251,12 +251,12 @@ Các agent phụ không giao tiếp trực tiếp, mọi luồng thông tin đ�
 
 Bốn tầng ràng buộc code (cùng hiệu lực):
 
-| Tầng | Điểm tác dụng | Vai trò |
-|---|---|---|
-| `StopAfterTools` / `StopAfterToolResult` | `agents/build.go` SubAgentConfig | Công cụ quan trọng thành công → end_turn thoát subagent run. Writer nhấn `commit_chapter` dừng ngay (`StopAfterTools`); `save_arc_summary`/`save_volume_summary` của Editor, kết thúc cung/tập của Architect đi `StopAfterToolResult`. `save_review` của Editor không dừng cứng — nếu không sẽ cắt ngang StopGuard, kết thúc giao cho `NewEditorStopGuard` |
-| `CheckpointDeltaGuard` | `host/reminder/subagent_guards.go` | Lấy checkpoint baseline làm ranh giới, trước khi kết thúc lượt này phải thấy checkpoint mới của bước tương ứng, nếu không từ chối `end_turn`; chặn liên tiếp 3 lần nâng cấp terminate (dự phòng vòng lặp chết của mô hình yếu) |
-| `next_step` nội tuyến trong công cụ | Field giá trị trả về của các công cụ | Mỗi dữ liệu thực tế kèm "gợi ý bước tiếp theo". Ví dụ `plan_chapter` trả về `next_step: "Lập tức gọi draft_chapter..."`. LLM thấy dữ liệu thực tế là biết bước tiếp theo, không cần quay lại system prompt tìm |
-| Kiểm tra quyền sở hữu/tiền đề trong công cụ | `edit_chapter` `commit_chapter` v.v. | Chặn vật lý ở tầng dữ liệu: `edit_chapter` từ chối sửa chương đã hoàn thành nhưng không có trong `PendingRewrites`; `commit_chapter` từ chối commit rỗng khi bản nháp == bản cuối; `ConcurrencySafe=false` ngăn race condition đồng thời |
+| Tầng                                        | Điểm tác dụng                        | Vai trò                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `StopAfterTools` / `StopAfterToolResult`    | `agents/build.go` SubAgentConfig     | Công cụ quan trọng thành công → end_turn thoát subagent run. Writer nhấn `commit_chapter` dừng ngay (`StopAfterTools`); `save_arc_summary`/`save_volume_summary` của Editor, kết thúc cung/tập của Architect đi `StopAfterToolResult`. `save_review` của Editor không dừng cứng — nếu không sẽ cắt ngang StopGuard, kết thúc giao cho `NewEditorStopGuard` |
+| `CheckpointDeltaGuard`                      | `host/reminder/subagent_guards.go`   | Lấy checkpoint baseline làm ranh giới, trước khi kết thúc lượt này phải thấy checkpoint mới của bước tương ứng, nếu không từ chối `end_turn`; chặn liên tiếp 3 lần nâng cấp terminate (dự phòng vòng lặp chết của mô hình yếu)                                                                                                                             |
+| `next_step` nội tuyến trong công cụ         | Field giá trị trả về của các công cụ | Mỗi dữ liệu thực tế kèm "gợi ý bước tiếp theo". Ví dụ `plan_chapter` trả về `next_step: "Lập tức gọi draft_chapter..."`. LLM thấy dữ liệu thực tế là biết bước tiếp theo, không cần quay lại system prompt tìm                                                                                                                                             |
+| Kiểm tra quyền sở hữu/tiền đề trong công cụ | `edit_chapter` `commit_chapter` v.v. | Chặn vật lý ở tầng dữ liệu: `edit_chapter` từ chối sửa chương đã hoàn thành nhưng không có trong `PendingRewrites`; `commit_chapter` từ chối commit rỗng khi bản nháp == bản cuối; `ConcurrencySafe=false` ngăn race condition đồng thời                                                                                                                   |
 
 writer.md trong kiến trúc mới chỉ đảm nhận: hướng dẫn chất lượng viết, mô hình nhận thức chạy tiếp từ điểm dừng, giải thích hợp đồng chương. **Không còn làm điều phối quy trình** — khi LLM bỏ bước thì prompt không cứu, code sẽ cứu. Architect / editor cũng có bốn tầng ràng buộc tương tự trong công cụ/Guard riêng của chúng.
 
@@ -375,10 +375,10 @@ Resume dùng `Prompt` khởi chạy Run mới (bộ đếm turn reset, ngữ c�
 
 ### 8.3 Can thiệp người dùng
 
-| Điểm vào | Tiền tố | Ngữ nghĩa | Triển khai |
-|---|---|---|---|
-| `Steer(text)` | `[Người dùng can thiệp]` | Sửa đổi/truy vấn, cần Điều phối viên phán quyết | Khi đang chạy dùng `Inject`; khi dừng máy ghi PendingSteer vào `meta/run.json` |
-| `Continue(text)` | `[Người dùng can thiệp]` | Tiếp tục viết, đánh thức sau khi dừng máy | Khi đang chạy dùng `FollowUp`; khi dừng máy dùng `Inject` tự động khôi phục run |
+| Điểm vào         | Tiền tố                  | Ngữ nghĩa                                       | Triển khai                                                                      |
+| ---------------- | ------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------- |
+| `Steer(text)`    | `[Người dùng can thiệp]` | Sửa đổi/truy vấn, cần Điều phối viên phán quyết | Khi đang chạy dùng `Inject`; khi dừng máy ghi PendingSteer vào `meta/run.json`  |
+| `Continue(text)` | `[Người dùng can thiệp]` | Tiếp tục viết, đánh thức sau khi dừng máy       | Khi đang chạy dùng `FollowUp`; khi dừng máy dùng `Inject` tự động khôi phục run |
 
 Hai điểm vào thống nhất qua helper `interventionMsg` thêm tiền tố `[Người dùng can thiệp]` — đây là neo cho phân loại can thiệp trong `coordinator.md`; trước đây Continue gửi văn bản trần sẽ bỏ qua phân loại, bị phái nhầm writer sửa chương đã viết (đã sửa).
 
@@ -417,7 +417,7 @@ internal/
 assets/
   prompts/        coordinator (~55 dòng) / architect-short|long / writer / editor / import-* / simulation-*
   references/     Kỹ thuật viết + mẫu thể loại + lập kế hoạch tiểu thuyết dài v.v.
-  styles/         mặc định/fantasy/romance/suspense
+  styles/         mặc định/fantasy/romance/suspense/sangvan
 
 ../agentcore     Framework Agent dùng chung (thư mục anh em go.work, có thể thêm khả năng chung, không thêm nghiệp vụ)
 ../litellm       Gateway LLM
@@ -425,12 +425,12 @@ assets/
 
 ### 9.1 Các mốc tiến hóa
 
-| Thời gian | Tái cấu trúc | Hiệu quả ròng |
-|---|---|---|
-| 2026-04-10 | `internal/orchestrator/` (6342 dòng) → `host/` + `agents/` | Lõi runtime -74% |
-| 2026-04-20 | Hybrid Coordinator: tạo mới `host/flow/`, `reminder/` gọn lại, `coordinator.md` 88 dòng → 45 dòng | Tỉ lệ lỗi định tuyến tiệm cận 0 |
-| 2026-05-02 | agentcore `WithMaxToolErrors(0)` + `isReasoningOnlyStopAssistant`; `StreamIdleTimeout=5min`; xóa patch tiếp tục chạy `idleResumeCount` | mimo / streaming suy nghĩ chậm chạy thông |
-| 2026-06-05 | Vòng kín kế hoạch cuộn (`expand_arc`/`append_volume`) + `/import` phân tích ngược phân tầng tiếp tục viết + can thiệp độ dài người dùng | 200+ chương chạy thông lần đầu |
+| Thời gian  | Tái cấu trúc                                                                                                                            | Hiệu quả ròng                             |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| 2026-04-10 | `internal/orchestrator/` (6342 dòng) → `host/` + `agents/`                                                                              | Lõi runtime -74%                          |
+| 2026-04-20 | Hybrid Coordinator: tạo mới `host/flow/`, `reminder/` gọn lại, `coordinator.md` 88 dòng → 45 dòng                                       | Tỉ lệ lỗi định tuyến tiệm cận 0           |
+| 2026-05-02 | agentcore `WithMaxToolErrors(0)` + `isReasoningOnlyStopAssistant`; `StreamIdleTimeout=5min`; xóa patch tiếp tục chạy `idleResumeCount`  | mimo / streaming suy nghĩ chậm chạy thông |
+| 2026-06-05 | Vòng kín kế hoạch cuộn (`expand_arc`/`append_volume`) + `/import` phân tích ngược phân tầng tiếp tục viết + can thiệp độ dài người dùng | 200+ chương chạy thông lần đầu            |
 
 Thực đo: hy3-preview free 12 chương / 73 phút, mimo-v2.5-pro 10 chương / 84.000 chữ (trung bình chương 8400), đều chạy xong một lần; tiểu thuyết dài gpt-5.4 《凡骨》 235 chương / 1.270.000 chữ / trung bình chương 5407, vòng kín kế hoạch cuộn chạy thông.
 

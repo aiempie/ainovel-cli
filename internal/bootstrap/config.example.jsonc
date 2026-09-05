@@ -24,18 +24,18 @@
       // tùy chỉnh User-Agent / headers / anthropic_beta cho proxy.
       "extra": {
         "user_agent": "my-client/1.0",
-        "headers": { "X-Custom-Client": "my-client" }
-      }
+        "headers": { "X-Custom-Client": "my-client" },
+      },
     },
     "anthropic": {
       "api_key": "sk-ant-xxx",
-      "models": ["claude-sonnet-4", "claude-opus-4"]
+      "models": ["claude-sonnet-4", "claude-opus-4"],
     },
     "ollama": {
       // ollama / bedrock / proxy tùy chỉnh có type tường minh có thể bỏ qua api_key
       // base_url cần có /v1 (endpoint tương thích OpenAI của ollama nằm ở /v1)
       "base_url": "http://localhost:11434/v1",
-      "models": ["qwen3:14b"]
+      "models": ["qwen3:14b"],
     },
     "my-proxy": {
       // Proxy Anthropic tùy chỉnh. Khi proxy cần nhận diện client, dùng extra để truyền thêm
@@ -50,10 +50,10 @@
         "headers": {
           "X-Stainless-Lang": "js",
           "X-Stainless-Package-Version": "0.94.0",
-          "X-Stainless-Runtime": "node"
-        }
-      }
-    }
+          "X-Stainless-Runtime": "node",
+        },
+      },
+    },
   },
 
   // Tùy chọn. Ghi đè model mặc định theo từng vai trò; vai trò không cấu hình sẽ dùng model ở trên.
@@ -69,8 +69,8 @@
   //   "architect": { "provider": "openrouter", "model": "google/gemini-3.1-pro" }
   // },
 
-  // Phong cách viết: default / suspense / fantasy / romance.
-  "style": "default"
+  // Phong cách viết: default / suspense / fantasy / romance / sangvan.
+  "style": "default",
 
   // Tùy chọn. Chỉ định tường minh kích thước cửa sổ ngữ cảnh dùng để nén ngữ cảnh. Bỏ qua / 0 = tự động phân tích theo tên model
   // (nếu có trong registry thì dùng cửa sổ thực, nếu không thì mặc định 200k). Khi đã cấu hình sẽ được ưu tiên dùng:

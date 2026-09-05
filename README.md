@@ -36,17 +36,17 @@ Công cụ CLI sáng tác tiểu thuyết dài kỳ hoàn toàn tự động b�
 
 ## Tính năng nổi bật
 
-| Tính năng | Mô tả |
-|---|---|
-| **Đa agent tự chủ** | Điều phối viên điều phối Kiến trúc sư → Người viết → Biên tập viên trong một vòng lặp LLM duy nhất |
-| **Viết hoàn chỉnh không cần trực** | Nhập một câu, hệ thống tự xây dựng thế giới, lập đề cương, viết và đánh giá toàn bộ |
-| **Hỗ trợ 500+ chương** | Quản lý ngữ cảnh 3 tầng (chương → cung → tập), tự động nén khi đầy |
-| **Kế hoạch cuộn** | Không lập kế hoạch toàn bộ một lần. Cung/tập sau mở rộng dần khi cần, tránh đề cương rỗng tuếch |
-| **Khôi phục cấp step** | Checkpoint sau mỗi lần gọi công cụ thành công — crash/mất mạng/Ctrl+C đều khôi phục chính xác |
-| **Can thiệp thời gian thực** | Nhập ý kiến chỉnh sửa bất cứ lúc nào, không cần dừng, hệ thống tự đánh giá phạm vi ảnh hưởng |
-| **Đánh giá 7 chiều** | Biên tập viên đánh giá: tính nhất quán, nhân vật, nhịp truyện, mạch kể, phục bút, điểm móc, thẩm mỹ |
-| **Chống văn phong AI** | Bộ tiêu chí cơ học + ngữ nghĩa tích hợp sẵn, tự động kiểm tra khi lưu chương |
-| **Nhiều nhà cung cấp LLM** | OpenRouter, Anthropic, Gemini, OpenAI, Deepseek, Ollama (local), và proxy tuỳ chỉnh |
+| Tính năng                          | Mô tả                                                                                               |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Đa agent tự chủ**                | Điều phối viên điều phối Kiến trúc sư → Người viết → Biên tập viên trong một vòng lặp LLM duy nhất  |
+| **Viết hoàn chỉnh không cần trực** | Nhập một câu, hệ thống tự xây dựng thế giới, lập đề cương, viết và đánh giá toàn bộ                 |
+| **Hỗ trợ 500+ chương**             | Quản lý ngữ cảnh 3 tầng (chương → cung → tập), tự động nén khi đầy                                  |
+| **Kế hoạch cuộn**                  | Không lập kế hoạch toàn bộ một lần. Cung/tập sau mở rộng dần khi cần, tránh đề cương rỗng tuếch     |
+| **Khôi phục cấp step**             | Checkpoint sau mỗi lần gọi công cụ thành công — crash/mất mạng/Ctrl+C đều khôi phục chính xác       |
+| **Can thiệp thời gian thực**       | Nhập ý kiến chỉnh sửa bất cứ lúc nào, không cần dừng, hệ thống tự đánh giá phạm vi ảnh hưởng        |
+| **Đánh giá 7 chiều**               | Biên tập viên đánh giá: tính nhất quán, nhân vật, nhịp truyện, mạch kể, phục bút, điểm móc, thẩm mỹ |
+| **Chống văn phong AI**             | Bộ tiêu chí cơ học + ngữ nghĩa tích hợp sẵn, tự động kiểm tra khi lưu chương                        |
+| **Nhiều nhà cung cấp LLM**         | OpenRouter, Anthropic, Gemini, OpenAI, Deepseek, Ollama (local), và proxy tuỳ chỉnh                 |
 
 ---
 
@@ -80,11 +80,11 @@ Công cụ CLI sáng tác tiểu thuyết dài kỳ hoàn toàn tự động b�
 
 ## Yêu cầu hệ thống
 
-| Phương pháp | Yêu cầu |
-|---|---|
-| **Docker** (khuyến nghị) | Docker Desktop ≥ 24, 4 GB RAM trống |
-| **Build từ source** | Go ≥ 1.21 |
-| **Model AI** | API key từ nhà cung cấp, hoặc Ollama chạy local |
+| Phương pháp              | Yêu cầu                                         |
+| ------------------------ | ----------------------------------------------- |
+| **Docker** (khuyến nghị) | Docker Desktop ≥ 24, 4 GB RAM trống             |
+| **Build từ source**      | Go ≥ 1.21                                       |
+| **Model AI**             | API key từ nhà cung cấp, hoặc Ollama chạy local |
 
 > **Windows**: Khuyến nghị dùng Docker. Không cần cài Go.
 
@@ -134,6 +134,7 @@ docker run --rm -it -v "%CD%\config:/root/.ainovel" -v "%CD%\workspace:/workspac
 ```
 
 > **Windows Terminal**: Mở tab mới tự động —
+>
 > ```powershell
 > Start-Process "wt.exe" -ArgumentList "new-tab", "cmd", "/k", 'docker run --rm -it -v "%CD%\config:/root/.ainovel" -v "%CD%\workspace:/workspace" -e TERM=xterm-256color ainovel-cli-vi'
 > ```
@@ -184,6 +185,7 @@ ollama pull qwen3.5:27b     # Chất lượng cao hơn, cần RAM nhiều hơn
 ```
 
 `config/config.json`:
+
 ```json
 {
   "provider": "ollama",
@@ -215,11 +217,7 @@ Truy cập [openrouter.ai](https://openrouter.ai) để đăng ký API key. Hỗ
     "openrouter": {
       "api_key": "sk-or-v1-...",
       "base_url": "https://openrouter.ai/api/v1",
-      "models": [
-        "google/gemini-2.5-flash",
-        "google/gemini-2.5-pro",
-        "anthropic/claude-sonnet-4"
-      ]
+      "models": ["google/gemini-2.5-flash", "google/gemini-2.5-pro", "anthropic/claude-sonnet-4"]
     }
   }
 }
@@ -263,9 +261,9 @@ Dùng model mạnh cho Kiến trúc sư (lập đề cương), model nhanh cho N
   },
   "roles": {
     "coordinator": { "provider": "openrouter", "model": "google/gemini-2.5-flash" },
-    "architect":   { "provider": "anthropic",  "model": "claude-sonnet-4-6" },
-    "writer":      { "provider": "openrouter", "model": "google/gemini-2.5-flash" },
-    "editor":      { "provider": "openrouter", "model": "google/gemini-2.5-flash" }
+    "architect": { "provider": "anthropic", "model": "claude-sonnet-4-6" },
+    "writer": { "provider": "openrouter", "model": "google/gemini-2.5-flash" },
+    "editor": { "provider": "openrouter", "model": "google/gemini-2.5-flash" }
   }
 }
 ```
@@ -278,11 +276,13 @@ Dùng model mạnh cho Kiến trúc sư (lập đề cương), model nhanh cho N
 2. Giao diện TUI hiện ra — nhập yêu cầu tiểu thuyết vào ô bên dưới và nhấn **Enter**
 
 **Ví dụ yêu cầu ngắn** (hệ thống tự bổ sung thêm chi tiết):
+
 ```
 Cung đấu gia tộc, nhân vật chính xuất thân thấp kém nhưng tài năng ẩn giấu
 ```
 
 **Ví dụ yêu cầu chi tiết** (kiểm soát nhiều hơn):
+
 ```
 Tiểu thuyết fantasy cổ đại Việt Nam, nhân vật chính là cô gái nghèo bị bán vào phủ làm tỳ nữ.
 Thể loại: cung đấu + ngôn tình. Khoảng 80 chương. Nhân vật nam chính: vương gia lạnh lùng nhưng
@@ -292,6 +292,7 @@ thực ra bảo vệ nàng từ bóng tối. Kết thúc có hậu. Viết theo 
 > **Mẹo**: Yêu cầu càng cụ thể (thể loại, số chương, nhân vật, tone văn) thì kết quả càng sát ý muốn. Nhưng chỉ một câu ngắn cũng đủ để bắt đầu.
 
 Sau khi nhập, hệ thống bắt đầu tự động:
+
 1. **Kiến trúc sư** — Xây dựng thế giới quan, nhân vật, đề cương chi tiết
 2. **Người viết** — Viết từng chương theo đề cương (plan → draft → kiểm tra → lưu)
 3. **Biên tập viên** — Đánh giá chất lượng sau mỗi cung truyện, quyết định viết lại hay tiếp tục
@@ -302,24 +303,24 @@ Sau khi nhập, hệ thống bắt đầu tự động:
 
 Gõ `/` vào ô nhập liệu để xem danh sách lệnh, hoặc dùng trực tiếp:
 
-| Lệnh | Mô tả |
-|---|---|
-| `/help` | Xem danh sách lệnh và phím tắt |
-| `/model [vai-trò]` | Chuyển model — mở bảng chọn. Ví dụ `/model writer` chuyển riêng model Người viết |
-| `/diag` | Báo cáo chẩn đoán: phát hiện vòng lặp, chương bỏ sót, phục bút trì trệ, v.v. |
-| `/export` | Xuất truyện ra TXT. Xem [Xuất truyện](#xuất-truyện) |
-| `/export ~/ten-truyen.epub` | Xuất ra EPUB (đọc được trên máy đọc sách) |
-| `/import <đường-dẫn>` | Nhập tiểu thuyết có sẵn để tiếp tục viết |
-| `/simulate` | Tạo hồ sơ phong cách viết từ văn mẫu trong thư mục `simulate/` |
-| `/cocreate` | Tạm dừng sáng tác, đồng sáng tác lên kế hoạch giai đoạn tiếp theo |
+| Lệnh                        | Mô tả                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------- |
+| `/help`                     | Xem danh sách lệnh và phím tắt                                                   |
+| `/model [vai-trò]`          | Chuyển model — mở bảng chọn. Ví dụ `/model writer` chuyển riêng model Người viết |
+| `/diag`                     | Báo cáo chẩn đoán: phát hiện vòng lặp, chương bỏ sót, phục bút trì trệ, v.v.     |
+| `/export`                   | Xuất truyện ra TXT. Xem [Xuất truyện](#xuất-truyện)                              |
+| `/export ~/ten-truyen.epub` | Xuất ra EPUB (đọc được trên máy đọc sách)                                        |
+| `/import <đường-dẫn>`       | Nhập tiểu thuyết có sẵn để tiếp tục viết                                         |
+| `/simulate`                 | Tạo hồ sơ phong cách viết từ văn mẫu trong thư mục `simulate/`                   |
+| `/cocreate`                 | Tạm dừng sáng tác, đồng sáng tác lên kế hoạch giai đoạn tiếp theo                |
 
 **Phím tắt:**
 
-| Phím | Chức năng |
-|---|---|
-| `Enter` | Gửi yêu cầu / can thiệp |
-| `Tab` | Chuyển chế độ khởi động (Bắt đầu nhanh ↔ Đồng sáng tác) |
-| `Esc` | Xóa ô nhập / thoát panel |
+| Phím     | Chức năng                                               |
+| -------- | ------------------------------------------------------- |
+| `Enter`  | Gửi yêu cầu / can thiệp                                 |
+| `Tab`    | Chuyển chế độ khởi động (Bắt đầu nhanh ↔ Đồng sáng tác) |
+| `Esc`    | Xóa ô nhập / thoát panel                                |
 | `Ctrl+C` | Thoát app (tiến độ được lưu, lần sau khôi phục tự động) |
 
 ---
@@ -334,13 +335,13 @@ Trong quá trình sáng tác, nhập ý kiến vào ô phía dưới bất cứ 
 
 Hệ thống tự phân loại và xử lý:
 
-| Loại can thiệp | Ví dụ | Hệ thống làm gì |
-|---|---|---|
-| **Tiếp tục** | "viết tiếp đi", "ok hay đó" | Không làm gì, tiếp tục luồng chính |
-| **Điều chỉnh dài hạn** | "sau này tăng tỷ lệ đối thoại", "tiêu đề chỉ dùng tiếng Việt" | Lưu chỉ dẫn bền vững, áp dụng từ chương sau |
-| **Điều chỉnh đề cương** | "thêm nhân vật phản diện", "đưa tình tiết X lên chương 5" | Kiến trúc sư cập nhật đề cương |
-| **Viết lại chương cũ** | "chương 3 hơi nhạt, viết lại" | Biên tập viên xếp hàng viết lại |
-| **Thay đổi cài đặt** | "đổi nhân vật chính thành nữ" | Kiến trúc sư cập nhật hồ sơ nhân vật |
+| Loại can thiệp          | Ví dụ                                                         | Hệ thống làm gì                             |
+| ----------------------- | ------------------------------------------------------------- | ------------------------------------------- |
+| **Tiếp tục**            | "viết tiếp đi", "ok hay đó"                                   | Không làm gì, tiếp tục luồng chính          |
+| **Điều chỉnh dài hạn**  | "sau này tăng tỷ lệ đối thoại", "tiêu đề chỉ dùng tiếng Việt" | Lưu chỉ dẫn bền vững, áp dụng từ chương sau |
+| **Điều chỉnh đề cương** | "thêm nhân vật phản diện", "đưa tình tiết X lên chương 5"     | Kiến trúc sư cập nhật đề cương              |
+| **Viết lại chương cũ**  | "chương 3 hơi nhạt, viết lại"                                 | Biên tập viên xếp hàng viết lại             |
+| **Thay đổi cài đặt**    | "đổi nhân vật chính thành nữ"                                 | Kiến trúc sư cập nhật hồ sơ nhân vật        |
 
 ---
 
@@ -357,10 +358,12 @@ Thêm vào `config.json`:
 ```
 
 Các phong cách có sẵn:
+
 - `default` — Phong cách chung, cân bằng
 - `romance` — Ngôn tình, chú trọng cảm xúc và mối quan hệ
 - `fantasy` — Kỳ ảo, kiếm hiệp, tiên hiệp
 - `suspense` — Bí ẩn, trinh thám, hồi hộp
+- `sangvan` — Sảng văn, vả mặt, trí tuệ / audio Zhihu
 
 ### Quy tắc tuỳ chỉnh
 
@@ -402,6 +405,7 @@ Crash, mất mạng, tắt máy — **không mất tiến độ**. Chỉ cần c
 > Muốn bắt đầu tiểu thuyết mới: xóa thư mục `workspace/output/` (hoặc di chuyển sang thư mục khác).
 
 **Quản lý nhiều tiểu thuyết**: Mỗi tiểu thuyết gắn với một thư mục workspace riêng. Dùng volume Docker khác nhau cho từng cuốn:
+
 ```bash
 -v "$PWD/workspace-truyen-1:/workspace"   # Tiểu thuyết 1
 -v "$PWD/workspace-truyen-2:/workspace"   # Tiểu thuyết 2
@@ -456,6 +460,7 @@ workspace/output/novel/
 **Nguyên nhân**: Còn session cũ bị hỏng trong workspace.
 
 **Giải pháp**: Xóa workspace cũ và khởi động lại:
+
 ```bash
 # Linux/macOS
 rm -rf workspace/output/
@@ -469,10 +474,12 @@ Remove-Item -Recurse -Force workspace\output\
 ### Coordinator gọi `novel_context` liên tục
 
 **Nguyên nhân phổ biến**:
+
 1. Model quá nhỏ (< 7B) — không đủ năng lực theo protocol phức tạp
 2. Session cũ bị hỏng — xóa workspace như trên
 
 **Giải pháp**: Dùng model lớn hơn. Khuyến nghị tối thiểu:
+
 - **Ollama local**: `gemma4:12b` hoặc `qwen3.5:27b`
 - **Cloud**: `gemini-2.5-flash`, `claude-sonnet-4`, `gpt-4o`
 
@@ -483,6 +490,7 @@ Remove-Item -Recurse -Force workspace\output\
 **Nguyên nhân**: Một số file Go chưa được dịch đầy đủ.
 
 **Giải pháp**: Rebuild Docker image sau khi pull phiên bản mới nhất:
+
 ```bash
 git pull
 docker build -t ainovel-cli-vi . --no-cache
@@ -497,10 +505,12 @@ connection refused / cannot reach localhost
 ```
 
 **Giải pháp**:
+
 - **Windows/Mac**: Dùng `host.docker.internal` thay `localhost` trong `base_url`
 - **Linux**: Dùng IP của bridge Docker: `172.17.0.1` hoặc chạy `ip route | grep docker0`
 
 Kiểm tra Ollama đang chạy:
+
 ```bash
 ollama list      # Xem models đã cài
 ollama ps        # Xem models đang chạy
@@ -522,6 +532,7 @@ setup: could not open a new TTY
 ## Kiến trúc nội bộ (cho developer)
 
 Xem chi tiết trong thư mục [`docs/`](docs/):
+
 - [`architecture.md`](docs/architecture.md) — Thiết kế tổng thể, nguyên tắc và ba điều luật
 - [`context-management.md`](docs/context-management.md) — Pipeline nén ngữ cảnh 4 cấp
 - [`observability.md`](docs/observability.md) — Hệ thống quan sát và chẩn đoán
